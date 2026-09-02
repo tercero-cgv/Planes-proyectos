@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asistente de Planificación Docente PR v2</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Asistente de Planificación Docente PR</h1>
+      <p>Versión 2 · Generación asistida, persistencia local y exportación DOCX real</p>
+    </div>
+    <button id="clearAllBtn" class="ghost">Limpiar datos locales</button>
+  </header>
+
+  <nav class="tabs" aria-label="Módulos">
+    <button class="tab active" data-tab="deleer">DE Leer</button>
+    <button class="tab" data-tab="socio">Salud Emocional</button>
+    <button class="tab" data-tab="integral">Plan Integrado</button>
+    <button class="tab" data-tab="profesional">Periodo Profesional</button>
+    <button class="tab" data-tab="org">Organizaciones</button>
+    <button class="tab" data-tab="config">⚙ Config</button>
+  </nav>
+
+  <main>
+    <!-- DE LEER -->
+    <section id="deleer" class="panel active">
+      <form id="deleerForm" class="card" style="max-width:760px">
+        <h2>Planificación Docente · DE Leer</h2>
+        <label>Mes escolar
+          <select id="dlMes" onchange="updateContext('dl')">
+            <option value="">Seleccione un mes</option>
+            <option value="agosto">Agosto</option><option value="septiembre">Septiembre</option>
+            <option value="octubre">Octubre</option><option value="noviembre">Noviembre</option>
+            <option value="diciembre">Diciembre</option><option value="enero">Enero</option>
+            <option value="febrero">Febrero</option><option value="marzo">Marzo</option>
+            <option value="abril">Abril</option><option value="mayo">Mayo</option>
+          </select>
+        </label>
+        <div id="dlContext" class="context-panel" style="display:none">
+          <p class="context-lema" id="dlLema"></p>
+          <p class="context-label">Celebraciones del mes:</p>
+          <p class="context-celebraciones" id="dlCelebraciones"></p>
+          <label>Tema del mes <select id="dlTemaMes"><option value="">Seleccione un tema</option></select></label>
+        </div>
+        <div class="grid two">
+          <label>Fecha <input type="date" id="dlFecha" required></label>
+          <label>Grado
+            <select id="dlGrado" required>
+              <option value="">Seleccione</option><option>K</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+            </select>
+          </label>
+          <label>Grupo <input id="dlGrupo" placeholder="Ej. 3-2" required></label>
+          <label>Maestro SH <input id="dlMaestro" placeholder="Nombre del maestro SH"></label>
+          <label>Maestro (apoyo) <input id="dlMaestroApoyo" placeholder="Nombre del maestro de apoyo"></label>
+          <label>Tema <input id="dlTema" placeholder="Ej. Solidaridad, Naturaleza..."></label>
+        </div>
+        <label>Lectura (título) <input id="dlTitulo" placeholder="Ej. Esmeraldina" required></label>
+        <label>Actividad realizada
+          <select id="dlActividad">
+            <option value="">Seleccione una actividad</option>
+            <option>Presentación digital</option>
+            <option>Cuento o poema digitalizado o ilustrado</option>
+            <option>Recetas</option>
+            <option>Invitación de personalidades para leer en el salón</option>
+            <option>Dramatización</option>
+            <option>Narración</option>
+            <option>Refranes o trabalenguas</option>
+            <option>Lectura compartida</option>
+            <option>Lectura guiada o dirigida</option>
+            <option>Lectura en voz alta</option>
+            <option>Lectura con tutores</option>
+            <option>Karaoke</option>
+          </select>
+        </label>
+        <label>Otra actividad realizada <input id="dlOtra" placeholder="Si no está en la lista, escríbela aquí"></label>
+        <label>Actividad de evaluación
+          <select id="dlEval">
+            <option value="">Seleccione una evaluación</option>
+            <option>Ficha de lectura</option>
+            <option>Desarrollo de eslabón para cadena de lectura</option>
+            <option>Discusión socializada</option>
+            <option>Respuesta escrita inmediata</option>
+            <option>Discusión de vocabulario en contexto</option>
+            <option>Ejercicio de aplicación</option>
+            <option>Trabajo creativo integrando las Bellas Artes</option>
+            <option>Esquema u organizador gráfico</option>
+          </select>
+        </label>
+        <label>Otra actividad de evaluación <input id="dlOtraEval" placeholder="Si no está en la lista, escríbela aquí"></label>
+        <div class="actions"><button type="submit" id="dlGenBtn">✨ Generar con IA</button></div>
+      </form>
+    </section>
+
+    <!-- SALUD EMOCIONAL -->
+    <section id="socio" class="panel">
+      <form id="socioForm" class="card" style="max-width:760px">
+        <h2>Planificación del Maestro · Encuentros de Salud Emocional en Acción</h2>
+        <div class="grid two">
+          <label>Grado
+            <select id="seGrado" required>
+              <option value="">Seleccione</option><option>K</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+            </select>
+          </label>
+          <label>Grupo <input id="seGrupo" placeholder="Ej. 3-2" required></label>
+          <label>Fecha <input type="date" id="seFecha" required></label>
+          <label>Maestro(a) <input id="seMaestro" placeholder="Nombre del maestro"></label>
+        </div>
+        <label>Tema fundamental
+          <select id="seTema"></select>
+        </label>
+        <div class="grid two" style="margin-top:.5rem">
+          <label>Libro de texto / materiales <input id="seLibro" placeholder="Título, materiales, etc."></label>
+          <label>Cápsula / video / recursos audiovisuales <input id="seCap" placeholder="Título"></label>
+        </div>
+        <label>Guía de encuentros <input id="seGuia" placeholder="Nombre, número de la guía y páginas"></label>
+        <label>Breve descripción de la actividad / Objetivos <textarea id="seDesc" rows="3" placeholder="Al finalizar el encuentro de salud emocional, el estudiante..."></textarea></label>
+        <label>Inicio <textarea id="seInicio" rows="2" placeholder="Cómo comenzará la sesión..."></textarea></label>
+        <label>Desarrollo <textarea id="seDesarrollo" rows="3" placeholder="Actividad principal..."></textarea></label>
+        <label>Cierre <textarea id="seCierre" rows="2" placeholder="Cómo cerrará la sesión..."></textarea></label>
+        <div class="actions"><button type="submit" id="seGenBtn">✨ Generar con IA</button></div>
+      </form>
+    </section>
+
+    <!-- PLAN INTEGRADO -->
+    <section id="integral" class="panel">
+      <div class="grid two">
+        <form id="integralForm" class="card">
+          <h2>Plan Integrado · DE Leer + Salud Emocional</h2>
+          <label>Mes escolar
+            <select id="aiMes" onchange="updateContext('ai')">
+              <option value="">Seleccione un mes</option>
+              <option value="agosto">Agosto</option><option value="septiembre">Septiembre</option>
+              <option value="octubre">Octubre</option><option value="noviembre">Noviembre</option>
+              <option value="diciembre">Diciembre</option><option value="enero">Enero</option>
+              <option value="febrero">Febrero</option><option value="marzo">Marzo</option>
+              <option value="abril">Abril</option><option value="mayo">Mayo</option>
+            </select>
+          </label>
+          <div id="aiContext" class="context-panel" style="display:none">
+            <p class="context-lema" id="aiLema"></p>
+            <p class="context-label">Celebraciones del mes:</p>
+            <p class="context-celebraciones" id="aiCelebraciones"></p>
+            <label>Tema del mes <select id="aiTemaMes"><option value="">Seleccione un tema</option></select></label>
+          </div>
+          <div class="notice">Combina ambos programas en un solo documento. Campos mínimos: fecha, grado, grupo y lectura.</div>
+          <div class="grid two">
+            <label>Fecha <input type="date" id="aiFecha" required></label>
+            <label>Grado
+              <select id="aiGrado" required>
+                <option value="">Seleccione</option><option>K</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+              </select>
+            </label>
+            <label>Grupo <input id="aiGrupo" placeholder="Ej. 3-2" required></label>
+            <label>Maestro(a) <input id="aiMaestro" placeholder="Nombre del maestro"></label>
+          </div>
+          <label>Modo
+            <select id="aiModo"><option value="auto">Automático: sugerir tema</option><option value="guiado">Guiado: usar tema seleccionado</option></select>
+          </label>
+          <label>Actividad realizada
+            <select id="aiActividad">
+              <option value="">Seleccione una actividad</option>
+              <option>Presentación digital</option>
+              <option>Cuento o poema digitalizado o ilustrado</option>
+              <option>Recetas</option>
+              <option>Invitación de personalidades para leer en el salón</option>
+              <option>Dramatización</option>
+              <option>Narración</option>
+              <option>Refranes o trabalenguas</option>
+              <option>Lectura compartida</option>
+              <option>Lectura guiada o dirigida</option>
+              <option>Lectura en voz alta</option>
+              <option>Lectura con tutores</option>
+              <option>Karaoke</option>
+            </select>
+          </label>
+          <label>Otra actividad realizada <input id="aiOtraAct" placeholder="Si no está en la lista, escríbela aquí"></label>
+          <label>Actividad de evaluación
+            <select id="aiEval">
+              <option value="">Seleccione una evaluación</option>
+              <option>Ficha de lectura</option>
+              <option>Desarrollo de eslabón para cadena de lectura</option>
+              <option>Discusión socializada</option>
+              <option>Respuesta escrita inmediata</option>
+              <option>Discusión de vocabulario en contexto</option>
+              <option>Ejercicio de aplicación</option>
+              <option>Trabajo creativo integrando las Bellas Artes</option>
+              <option>Esquema u organizador gráfico</option>
+            </select>
+          </label>
+          <label>Otra actividad de evaluación <input id="aiOtraEval" placeholder="Si no está en la lista, escríbela aquí"></label>
+          <label>Materiales, libros, recursos, guías <textarea id="aiMateriales" rows="3" placeholder="Describe los materiales, libros, recursos y guías que utilizarás..."></textarea></label>
+          <label>Tema socioemocional <select id="aiTema"></select></label>
+          <label>Título de la lectura <input id="aiLecturaTitulo" placeholder="Ej. Esmeraldina"></label>
+          <label>Lectura / recurso <input type="file" id="aiLectura" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.jpg,.jpeg,.png"></label>
+          <label>Resumen o idea principal <textarea id="aiResumen" rows="3" placeholder="Escribe 2-4 oraciones si el archivo no tiene texto legible por el navegador."></textarea></label>
+          <label>Actividad de evaluación deseada <input id="aiEvalDeseada" placeholder="Opcional: mini libro, discusión, dibujo, hoja de trabajo..."></label>
+          <div class="actions"><button type="submit" id="aiGenBtn">✨ Generar con IA</button></div>
+        </form>
+        <aside class="card">
+          <h3>Reglas activas</h3>
+          <ul class="compact">
+            <li>Adapta objetivos e instrucciones por grado K-5.</li>
+            <li>Conserva el nombre exacto del tema fundamental.</li>
+            <li>Si el modo es automático, justifica la sugerencia.</li>
+            <li>Genera anejos y evaluación sin dejar espacios en blanco.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="profesional" class="panel">
+      <div class="card">
+        <h2>Periodo Profesional · TADO/CAPA</h2>
+        <div class="grid four">
+          <label>Mes <select id="ppMes"></select></label>
+          <label>Año <input id="ppAno" type="number" min="2024" max="2035"></label>
+          <label>Tipo <select id="ppTipo"><option>TADO y CAPA</option><option>TADO</option><option>CAPA</option></select></label>
+          <label>Grado <input id="ppGrado" placeholder="Tercer Grado"></label>
+        </div>
+        <div class="grid two">
+          <label>Maestro(a) <input id="ppMaestro" placeholder="Nombre del maestro"></label>
+          <label>Nota mensual <input id="ppNota" placeholder="Opcional"></label>
+        </div>
+        <div class="actions">
+          <button id="buildCalendarBtn">Crear/actualizar calendario</button>
+          <button id="autoFillBtn" class="secondary">Autorrellenar días lectivos</button>
+          <button id="genProfBtn">Generar documento</button>
+        </div>
+        <div id="calendar" class="calendar"></div>
+      </div>
+    </section>
+
+    <section id="org" class="panel">
+      <div class="grid two">
+        <form id="orgForm" class="card">
+          <h2>Informe de actividad</h2>
+          <label>Organización <input id="orgNombre" required placeholder="Ej. Pequeños Pasteleros"></label>
+          <label>Fecha <input type="date" id="orgFecha" required></label>
+          <label>Duración <input id="orgDuracion" value="1 hora"></label>
+          <label>Grado/Grupo <input id="orgGrado" placeholder="Tercer grado"></label>
+          <label>Maestro(a) <input id="orgMaestro" placeholder="Nombre del maestro"></label>
+          <label>Actividad/Tema <input id="orgActividad" required></label>
+          <label>Descripción breve o notas <textarea id="orgNotas" rows="5" placeholder="Qué hicieron los estudiantes, materiales usados, productos..."></textarea></label>
+          <label>Fotos de evidencia <input type="file" id="orgFotos" accept="image/*" multiple></label>
+          <div id="fotoPreview" class="photo-grid"></div>
+          <div class="actions"><button type="submit">Generar informe</button></div>
+        </form>
+        <form id="orgAnualForm" class="card">
+          <h2>Documento anual de organización</h2>
+          <label>Nombre de la organización <input id="oaNombre" required></label>
+          <label>Programa o enfoque <input id="oaPrograma" placeholder="Ej. Artes Culinarias, STEM, Lectura..."></label>
+          <label>Grado/Grupo <input id="oaGrado" placeholder="Tercero 1 y 2"></label>
+          <label>Participantes <textarea id="oaParticipantes" rows="6" placeholder="Un estudiante por línea"></textarea></label>
+          <div class="actions"><button type="submit">Generar documento anual</button></div>
+        </form>
+      </div>
+    </section>
+
+
+    <section id="config" class="panel">
+      <div class="card" style="max-width:520px">
+        <h2>Configuración</h2>
+        <p style="color:var(--ink-3);font-size:13px;margin-bottom:1rem">Esta información aparece en el encabezado de todos los documentos.</p>
+        <label>🔑 API Key de Anthropic
+          <input id="cfgApiKey" type="password" placeholder="sk-ant-api03-...">
+        </label>
+        <p style="font-size:12px;color:var(--ink-3);margin-top:.25rem">Tu key se guarda solo en este navegador. Nunca se envía a ningún servidor externo.</p>
+        <label>Nombre del maestro(a) <input id="cfgMaestro" placeholder="Ej. María González"></label>
+        <label>Escuela <input id="cfgEscuela" value="Escuela Celso González Vaillant"></label>
+        <label>ORE <input id="cfgOre" value="ORE de Humacao"></label>
+        <label>Grado principal <input id="cfgGrado" placeholder="Ej. Tercer Grado"></label>
+        <label>Grupo <input id="cfgGrupo" placeholder="Ej. 3-1"></label>
+        <div class="actions" style="margin-top:1rem">
+          <button id="saveConfigBtn">Guardar configuración</button>
+        </div>
+        <p id="configMsg" style="font-size:13px;color:#166534;margin-top:.5rem;display:none">✓ Configuración guardada.</p>
+      </div>
+    </section>
+
+    <section id="outputWrap" class="output-wrap hidden">
+      <div class="output-toolbar">
+        <strong>Documento generado</strong>
+        <div class="actions">
+          <button id="downloadDocxBtn">Descargar DOCX</button>
+          <button id="printPdfBtn" class="secondary">Imprimir / Guardar PDF</button>
+          <button id="copyBtn" class="ghost">Copiar texto</button>
+        </div>
+      </div>
+      <article id="output" class="doc" contenteditable="true"></article>
+    </section>
+  </main>
+
+  <template id="dayTemplate">
+    <div class="day">
+      <div class="day-head"><span class="num"></span><label><input type="checkbox" class="no-school"> No lectivo</label></div>
+      <textarea class="day-text" placeholder="Seleccione o escriba actividades"></textarea>
+      <select class="activitySelect"></select>
+      <button class="addActivity secondary" type="button">Añadir</button>
+    </div>
+  </template>
+
+  <script src="jszip.min.js"></script>
+  <script src="docx-export.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
